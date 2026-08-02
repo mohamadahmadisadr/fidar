@@ -1,0 +1,6 @@
+{
+  "name": "FIDAR Business Solutions",
+  "description": "Modern React web application for FIDAR BS - international trading, consulting, engineering, and IT solutions, with multi-language support (German, English, Persian).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

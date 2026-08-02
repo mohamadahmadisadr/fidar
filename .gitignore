@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build output and coverage
+dist/
+build/
+coverage/
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Firebase local/emulator state and logs
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# TypeScript and tool caches
+*.tsbuildinfo
+.vite/
+.turbo/
+
+# Logs and local runtime output
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE settings
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.example.json
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,72 @@
+rules_version = '2';
+
+// ===========================================================================
+// TEMPORARY RULES FOR OPEN EXTERNAL TESTING — NOT FOR NORMAL OPERATION
+// ===========================================================================
+//
+// These let anyone with the URL edit products, categories and site content
+// without signing in, so external testers can exercise the admin panel.
+//
+// While these are live, ANYONE ON THE INTERNET can edit or delete your
+// products, categories and site configuration. That is the intended and
+// unavoidable consequence of an admin panel with no sign-in.
+//
+// Customer inquiries stay locked. Those records hold names, email addresses
+// and phone numbers belonging to third parties, and publishing them is a GDPR
+// problem regardless of how the rest of the panel is configured. Testers can
+// still submit the contact form; they just cannot read the inbox back.
+//
+// RESTORE THE MOMENT TESTING ENDS:
+//   npx firebase-tools deploy --only firestore:rules
+// (that deploys firestore.rules, the protected ruleset)
+//
+// To deploy THIS ruleset, point firebase.json at it temporarily, or run:
+//   npx firebase-tools deploy --only firestore:rules \
+//     --config firebase.open-testing.json
+// ===========================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Content collections — open so testers can exercise CRUD.
+    match /products/{productId} {
+      allow read, write: if true;
+    }
+
+    match /categories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    match /services/{serviceId} {
+      allow read, write: if true;
+    }
+
+    match /site_config/{docId} {
+      allow read, write: if true;
+    }
+
+    match /analytics/{docId} {
+      allow read, write: if true;
+    }
+
+    // Customer inquiries: submit-only, exactly as in the protected ruleset.
+    // Flip `allow read` to `if true` ONLY if testers must exercise the inbox
+    // tab, and understand that it publishes real customer contact details.
+    match /consultations/{consultationId} {
+      allow create: if request.resource.data.status == 'pending'
+        && request.resource.data.keys().hasAll(['name', 'email', 'service', 'status', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() < 200
+        && request.resource.data.email is string
+        && request.resource.data.email.size() < 200
+        && request.resource.data.get('message', '').size() < 5000;
+
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

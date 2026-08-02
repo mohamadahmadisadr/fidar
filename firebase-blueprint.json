@@ -1,0 +1,33 @@
+{
+  "entities": {
+    "consultations": {
+      "title": "Consultation Request",
+      "description": "User requested consultation quotes and inquiries",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "company": { "type": "string" },
+        "service": { "type": "string" },
+        "budget": { "type": "string" },
+        "region": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "createdAt"]
+    },
+    "services": {
+      "title": "Business Services & Products",
+      "description": "FIDAR BS offerings stored in Firestore",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "features": { "type": "array" },
+        "icon": { "type": "string" }
+      },
+      "required": ["title", "description"]
+    }
+  }
+}

@@ -1,0 +1,116 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------------
+    // Admin identity
+    // ---------------------------------------------------------------------
+
+    // Bootstrap allowlist. Mirrors DEFAULT_ADMIN_EMAILS in
+    // src/services/siteConfigService.ts. These accounts are always admins so a
+    // bad edit to site_config/general can never lock everyone out. Keep
+    // lowercase, and keep in sync with the code when it changes.
+    function bootstrapAdmins() {
+      return [
+        'devfa75@gmail.com',
+        'fidar.bs@gmail.com',
+        'info@fidarbs.at'
+      ];
+    }
+
+    // Allowlist managed from the admin UI. Stored lowercase by the UI; entries
+    // added by hand must be lowercase too or they will not match.
+    function configuredAdmins() {
+      return exists(/databases/$(database)/documents/site_config/general)
+        ? get(/databases/$(database)/documents/site_config/general).data.get('adminEmails', [])
+        : [];
+    }
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true
+        && (
+          request.auth.token.email.lower() in bootstrapAdmins()
+          || request.auth.token.email.lower() in configuredAdmins()
+        );
+    }
+
+    // ---------------------------------------------------------------------
+    // Public site content — world readable, admin writable
+    // ---------------------------------------------------------------------
+
+    // The marketing site fetches these while signed out, so read stays open.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Read is public because every page renders from this document.
+    // Write is admin-only: this document holds the adminEmails allowlist, so
+    // public write here would hand over the whole allowlist.
+    match /site_config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // Customer inquiries — write-only mailbox
+    // ---------------------------------------------------------------------
+
+    // Contact and quote forms submit while signed out, so anyone may create.
+    // Nobody but an admin may read them back: these hold names, emails and
+    // phone numbers. Public read here would expose every customer record.
+    match /consultations/{consultationId} {
+      allow create: if request.resource.data.status == 'pending'
+        && request.resource.data.keys().hasAll(['name', 'email', 'service', 'status', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() < 200
+        && request.resource.data.email is string
+        && request.resource.data.email.size() < 200
+        && request.resource.data.get('message', '').size() < 5000;
+
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // Analytics counters
+    // ---------------------------------------------------------------------
+
+    // trackPageView() increments this from signed-out visitors, so this single
+    // document has to stay publicly writable. Scoped to `stats` alone and
+    // shape-checked, but a determined visitor can still inflate the numbers —
+    // treat these counters as indicative, not trustworthy.
+    match /analytics/stats {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasOnly([
+        'totalVisits', 'todayVisits', 'monthVisits',
+        'lastVisitedDate', 'lastVisitedMonth', 'visitsByLang'
+      ]);
+    }
+
+    match /analytics/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------------
+    // Everything else is denied.
+    // ---------------------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
