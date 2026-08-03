@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  ArrowRight, ChevronRight
+  ArrowRight
 } from 'lucide-react';
 import { TranslationStructure, Language, SiteConfig } from '../../types';
 
@@ -19,10 +19,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenQuote,
   onExploreServices,
 }) => {
-  const badgeText = lang === 'de'
-    ? (siteConfig.hero?.badgeDe || t.hero.badge)
-    : (siteConfig.hero?.badgeEn || t.hero.badge);
-
   const titleText = lang === 'de'
     ? (siteConfig.hero?.titleDe || t.hero.title)
     : (siteConfig.hero?.titleEn || t.hero.title);
@@ -52,8 +48,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Breadcrumbs */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-white uppercase tracking-wider">
             <span className="text-[#FDB813] font-black">Home</span>
-            <ChevronRight className="w-3.5 h-3.5 text-white/60" />
-            <span>{badgeText}</span>
           </div>
 
           {/* Centered Page Title */}

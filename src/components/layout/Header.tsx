@@ -72,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-[#002B66]/80 font-bold tracking-wider">
-                Industrial Import & Export • Vienna
+                Industrial Import & Export
               </p>
             </div>
           </button>

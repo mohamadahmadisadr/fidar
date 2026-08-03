@@ -69,10 +69,6 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
             </div>
 
-            <p className="text-xs text-slate-200 leading-relaxed max-w-md font-normal">
-              {t.footer.description}
-            </p>
-
             {/* Social Links */}
             <div className="pt-2 flex items-center gap-3">
               <a

@@ -22,8 +22,8 @@ export const defaultSiteConfig: SiteConfig = {
     contactPerson: 'Reza Jafari',
   },
   hero: {
-    badgeEn: 'Vienna, Austria • Established 2019',
-    badgeDe: 'Wien, Österreich • Gegründet 2019',
+    badgeEn: '-',
+    badgeDe: '-',
     titleEn: 'About Our',
     titleDe: 'Über unser',
     highlightEn: 'Industrial Company',
@@ -77,8 +77,8 @@ export async function fetchSiteConfigFromFirestore(): Promise<SiteConfig> {
       return {
         ...defaultSiteConfig,
         ...foundConfig,
-        adminEmails: (foundConfig as SiteConfig).adminEmails && (foundConfig as SiteConfig).adminEmails!.length > 0 
-          ? (foundConfig as SiteConfig).adminEmails 
+        adminEmails: (foundConfig as SiteConfig).adminEmails && (foundConfig as SiteConfig).adminEmails!.length > 0
+          ? (foundConfig as SiteConfig).adminEmails
           : defaultSiteConfig.adminEmails,
         adminPinHash: (foundConfig as SiteConfig).adminPinHash || '',
         topBar: { ...defaultSiteConfig.topBar, ...(foundConfig as SiteConfig).topBar },

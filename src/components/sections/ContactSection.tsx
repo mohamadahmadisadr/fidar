@@ -149,7 +149,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                 <Building2 className="w-5 h-5 text-[#002B66]" />
                 <span>Inquiry & Contact Desk</span>
               </h3>
-              <span className="text-xs text-slate-500 font-bold">Fidar BestSupplier GmbH</span>
             </div>
 
             {status === 'success' ? (
