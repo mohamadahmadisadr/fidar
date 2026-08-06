@@ -54,17 +54,19 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Column 1: Company Profile */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Fidar BestSupplier GmbH Logo"
-                className="h-12 w-auto object-contain bg-white/10 p-1 rounded-lg"
-              />
-              <div>
+              <div className="shrink-0 rounded-xl border border-white/70 bg-white/90 p-2 shadow-lg shadow-black/20 backdrop-blur-sm">
+                <img
+                  src="/logo.png"
+                  alt="Fidar BestSupplier GmbH Logo"
+                  className="h-12 w-auto object-contain"
+                />
+              </div>
+              <div className="text-center">
                 <h3 className="font-black text-xl text-white tracking-tight">
                   Fidar BestSupplier <span className="text-[#FDB813]">GmbH</span>
                 </h3>
                 <p className="text-[11px] text-[#ABC2E8] font-bold tracking-wider">
-                  Import & Export • Vienna
+                  Import & Export
                 </p>
               </div>
             </div>

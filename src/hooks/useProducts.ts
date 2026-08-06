@@ -14,14 +14,39 @@ export interface CategoryOption {
   label: string;
   icon?: string;
   count: number;
+  aliases?: string[];
+}
+
+/**
+ * Treat formatting differences as the same category. Firestore currently has
+ * equivalent values such as "Ferrous & Non-ferrous alloys" and
+ * "Ferrous and Non-ferrous alloys" in different documents.
+ */
+function normalizeCategoryKey(value: string): string {
+  return value
+    .toLocaleLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function getCategoryAliases(...values: Array<string | undefined>): string[] {
+  return Array.from(new Set(
+    values
+      .flatMap((value) => value ? value.split(',') : [])
+      .map(normalizeCategoryKey)
+      .filter(Boolean),
+  ));
 }
 
 /** True when a product belongs to the given category id. */
-function matchesCategory(item: ServiceProductItem, categoryId: string): boolean {
+function matchesCategory(item: ServiceProductItem, categoryId: string, aliases: string[] = []): boolean {
   const itemCat = (item.category || '').trim();
   if (categoryId === UNCATEGORIZED_ID) return itemCat === '';
   if (!itemCat) return false;
-  return itemCat.toLowerCase() === categoryId.toLowerCase().trim() || itemCat === categoryId;
+  const itemKey = normalizeCategoryKey(itemCat);
+  return [normalizeCategoryKey(categoryId), ...aliases].includes(itemKey);
 }
 
 /**
@@ -59,29 +84,60 @@ export function useProducts(lang: Language = 'en') {
 
   // Merge the Firestore `categories` collection with categories referenced by
   // products, skipping numeric-only labels which come from malformed docs.
+  // Normalize the keys and support comma-separated taxonomy aliases so
+  // formatting or legacy naming differences do not create duplicate public
+  // categories. For example, the taxonomy stores
+  // "Ferrous and Non-ferrous alloys, Pure Metals, Precious Alloys", while
+  // older products use its first segment as their category.
   const categoryList = useMemo<CategoryOption[]>(() => {
     const list: CategoryOption[] = [];
-    const addedIds = new Set<string>();
+    const categoryByAlias = new Map<string, CategoryOption>();
+
+    const addCategory = (
+      id: string,
+      label: string,
+      icon: string | undefined,
+      aliases: string[],
+    ) => {
+      const normalizedAliases = getCategoryAliases(id, ...aliases);
+      const existing = normalizedAliases
+        .map((alias) => categoryByAlias.get(alias))
+        .find(Boolean);
+
+      if (existing) {
+        existing.aliases = Array.from(new Set([...(existing.aliases || []), ...normalizedAliases]));
+        normalizedAliases.forEach((alias) => categoryByAlias.set(alias, existing));
+        return;
+      }
+
+      const option: CategoryOption = {
+        id,
+        label,
+        icon,
+        count: 0,
+        aliases: normalizedAliases,
+      };
+      list.push(option);
+      normalizedAliases.forEach((alias) => categoryByAlias.set(alias, option));
+    };
 
     categories.forEach((cat) => {
       const label = lang === 'de' ? (cat.nameDe || cat.nameEn) : cat.nameEn;
       const catKey = cat.nameEn || cat.id;
-      if (label && !/^\d+$/.test(label) && !addedIds.has(catKey)) {
-        addedIds.add(catKey);
-        list.push({ id: catKey, label, icon: cat.icon, count: 0 });
+      if (label && !/^\d+$/.test(label)) {
+        addCategory(catKey, label, cat.icon, [cat.nameEn, cat.nameDe, cat.id]);
       }
     });
 
     products.forEach((p) => {
-      if (p.category && !/^\d+$/.test(p.category) && !addedIds.has(p.category)) {
-        addedIds.add(p.category);
-        list.push({ id: p.category, label: p.category, count: 0 });
+      if (p.category && !/^\d+$/.test(p.category)) {
+        addCategory(p.category, p.category, undefined, [p.category]);
       }
     });
 
     const withCounts = list.map((cat) => ({
       ...cat,
-      count: products.filter((p) => matchesCategory(p, cat.id)).length,
+      count: products.filter((p) => matchesCategory(p, cat.id, cat.aliases)).length,
     }));
 
     // Keep products that carry no category reachable instead of hiding them.
@@ -100,8 +156,9 @@ export function useProducts(lang: Language = 'en') {
 
   const filteredProducts = useMemo(() => {
     if (!activeCategory) return [];
-    return products.filter((item) => matchesCategory(item, activeCategory));
-  }, [products, activeCategory]);
+    const activeOption = categoryList.find((category) => category.id === activeCategory);
+    return products.filter((item) => matchesCategory(item, activeCategory, activeOption?.aliases));
+  }, [products, activeCategory, categoryList]);
 
   const activeCategoryOption = useMemo(
     () => categoryList.find((c) => c.id === activeCategory) ?? null,
