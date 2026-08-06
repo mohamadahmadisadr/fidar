@@ -36,8 +36,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
     : (siteConfig.topBar?.hoursEn || t.contact.info.hoursValue);
 
   const mapUrlDisplay = siteConfig.mapUrl || "https://maps.google.com/maps?q=Nordbahnanlage%204%2C%201210%20Wien%2C%20Austria&t=&z=15&ie=UTF8&iwloc=&output=embed";
-  const isGerman = lang === 'de';
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
@@ -135,7 +133,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
             {/* Interactive Google Maps Iframe */}
             <div className="rounded-2xl overflow-hidden border border-[#E5E7EB] h-56 shadow-sm relative">
               <iframe
-                title="Fidar BestSupplier GmbH Vienna Location"
+                title={t.contact.info.mapTitle}
                 src={mapUrlDisplay}
                 className="w-full h-full border-0"
                 loading="lazy"
@@ -148,7 +146,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
             <div className="flex items-center justify-between pb-4 border-b border-[#E5E7EB]">
               <h3 className="text-xl font-black text-[#1A1A1A] flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#002B66]" />
-                <span>{isGerman ? 'Anfrage & Kontakt' : 'Inquiry & Contact'}</span>
+                <span>{t.contact.form.inquiryTitle}</span>
               </h3>
             </div>
 
@@ -158,7 +156,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h4 className="text-2xl font-black text-[#1A1A1A]">
-                  {isGerman ? 'Vielen Dank!' : 'Thank You!'}
+                  {t.contact.form.successTitle}
                 </h4>
                 <p className="text-sm text-slate-700 max-w-md mx-auto leading-relaxed">
                   {t.contact.form.success}
@@ -168,7 +166,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                   onClick={() => setStatus('idle')}
                   className="px-6 py-2.5 rounded-xl bg-[#002B66] text-white text-xs font-bold hover:bg-[#001D47]"
                 >
-                  {isGerman ? 'Neue Anfrage senden' : 'Send another inquiry'}
+                  {t.contact.form.retry}
                 </button>
               </div>
             ) : (
@@ -182,7 +180,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                     <input
                       type="text"
                       required
-                      placeholder={isGerman ? 'Ihr Name' : 'Name'}
+                      placeholder={t.contact.form.namePlaceholder}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full p-3.5 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none"
@@ -197,7 +195,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                     <input
                       type="email"
                       required
-                      placeholder={isGerman ? 'name@unternehmen.at' : 'name@company.com'}
+                      placeholder={t.contact.form.emailPlaceholder}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full p-3.5 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none"
@@ -230,21 +228,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                       className="w-full p-3.5 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none font-semibold"
                     >
-                      <option value="alloys">
-                        {isGerman ? 'Eisen- und Nichteisenlegierungen' : 'Ferrous & Non-ferrous alloys'}
-                      </option>
-                      <option value="ceramics">
-                        {isGerman ? 'Keramik & Magnete' : 'Ceramics & Magnets'}
-                      </option>
-                      <option value="electronics">
-                        {isGerman ? 'Elektrische & elektronische Teile' : 'Electric & Electronic parts'}
-                      </option>
-                      <option value="machinery">
-                        {isGerman ? 'Maschinen & Ausrüstung' : 'Machines & Equipment'}
-                      </option>
-                      <option value="heating">
-                        {isGerman ? 'Rohstoffe & Teile für Heizelemente' : 'Heating elements raw material & parts'}
-                      </option>
+                      <option value="alloys">{t.services.categories.trade}</option>
+                      <option value="ceramics">{t.services.categories.construction}</option>
+                      <option value="electronics">{t.services.categories.consulting}</option>
+                      <option value="machinery">{t.services.categories.technology}</option>
+                      <option value="heating">{t.services.categories.logistics}</option>
                     </select>
                   </div>
                 </div>
@@ -257,7 +245,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ t, lang, siteCon
                   <textarea
                     rows={4}
                     required
-                    placeholder={isGerman ? 'Ihre Anfrage...' : 'Your inquiry details...'}
+                    placeholder={t.contact.form.messagePlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full p-3.5 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none resize-none"

@@ -38,7 +38,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Background Image */}
         <img
           src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80"
-          alt="Fidar BestSupplier Industrial Banner"
+          alt={t.hero.imageAlt}
           className="absolute inset-0 w-full h-full object-cover object-center opacity-30"
         />
         {/* Dark Overlay gradient */}
@@ -47,7 +47,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="relative max-w-5xl mx-auto px-4 sm:px-8 py-20 text-center space-y-6 z-10">
           {/* Breadcrumbs */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-white uppercase tracking-wider">
-            <span className="text-[#FDB813] font-black">Home</span>
+            <span className="text-[#FDB813] font-black">{t.nav.home}</span>
           </div>
 
           {/* Centered Page Title */}

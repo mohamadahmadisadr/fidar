@@ -9,6 +9,26 @@ export interface TranslationStructure {
     hours: string;
     getQuote: string;
     contactPerson: string;
+    subtitle: string;
+    menuLabel: string;
+  };
+  quoteModal: {
+    successTitle: string;
+    successMessage: string;
+    close: string;
+    name: string;
+    namePlaceholder: string;
+    email: string;
+    emailPlaceholder: string;
+    phone: string;
+    company: string;
+    companyPlaceholder: string;
+    service: string;
+    message: string;
+    messagePlaceholder: string;
+    directInquiry: string;
+    submit: string;
+    submitting: string;
   };
   nav: {
     home: string;
@@ -35,6 +55,7 @@ export interface TranslationStructure {
       satisfaction: string;
       satisfactionLabel: string;
     };
+    imageAlt: string;
   };
   services: {
     tag: string;
@@ -47,6 +68,26 @@ export interface TranslationStructure {
       consulting: string;
       technology: string;
       logistics: string;
+    };
+    ui: {
+      title: string;
+      activeSubtitle: string;
+      chooseCategorySubtitle: string;
+      loading: string;
+      noCategories: string;
+      productSingular: string;
+      productPlural: string;
+      backToCategoriesAria: string;
+      categories: string;
+      switchCategory: string;
+      noProducts: string;
+      allCategories: string;
+      details: string;
+      inquire: string;
+      notFoundPrompt: string;
+      browseOther: string;
+      specifications: string;
+      close: string;
     };
     items: Array<{
       id: string;
@@ -74,6 +115,8 @@ export interface TranslationStructure {
     capabilitiesContent: string;
     orderPolicyContent: string;
     exportScopeContent: string;
+    headingPrefix: string;
+    imageAlt: string;
   };
   contact: {
     tag: string;
@@ -81,10 +124,16 @@ export interface TranslationStructure {
     subtitle: string;
     form: {
       name: string;
+      namePlaceholder: string;
       email: string;
+      emailPlaceholder: string;
       phone: string;
       service: string;
       message: string;
+      messagePlaceholder: string;
+      inquiryTitle: string;
+      successTitle: string;
+      retry: string;
       fileLabel: string;
       submit: string;
       submitting: string;
@@ -101,7 +150,32 @@ export interface TranslationStructure {
       emailValue: string;
       hoursTitle: string;
       hoursValue: string;
+      mapTitle: string;
     };
+  };
+  legal: {
+    impressum: {
+      title: string;
+      subtitle: string;
+      ownerTitle: string;
+      businessSubjectLabel: string;
+      businessSubject: string;
+      foundingYearLabel: string;
+      foundingYear: string;
+      contactPersonLabel: string;
+      contactTitle: string;
+      phoneLabel: string;
+      emailLabel: string;
+      websiteLabel: string;
+      disclaimerTitle: string;
+      disclaimerText: string;
+    };
+    privacy: {
+      title: string;
+      subtitle: string;
+      sections: Array<{ title: string; body: string }>;
+    };
+    close: string;
   };
   footer: {
     description: string;
@@ -110,5 +184,7 @@ export interface TranslationStructure {
     legalTitle: string;
     rights: string;
     copyright: string;
+    companyTitle: string;
+    backToTop: string;
   };
 }

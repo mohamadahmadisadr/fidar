@@ -62,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <img
               src="/logo.png"
-              alt="Fidar BestSupplier GmbH Logo"
+              alt="Fidar BestSupplier GmbH"
               className="h-12 w-auto object-contain group-hover:scale-105 transition-transform"
             />
             <div>
@@ -72,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-[#002B66]/80 font-bold tracking-wider">
-                Industrial Import & Export
+                {t.topBar.subtitle}
               </p>
             </div>
           </button>
@@ -212,7 +212,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-[#002B66] text-[#FDB813] focus:outline-none cursor-pointer"
-              aria-label="Toggle Menu"
+              aria-label={t.topBar.menuLabel}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>

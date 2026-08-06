@@ -60,7 +60,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ t, lang, siteConfig 
               <div className="relative rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-lg bg-white h-96 group">
                 <img
                   src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
-                  alt="Fidar BestSupplier GmbH Vienna Industrial Facility"
+                  alt={t.about.imageAlt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#002B66]/90 via-[#002B66]/20 to-transparent" />
@@ -75,7 +75,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ t, lang, siteConfig 
                 {tagText}
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1A1A] tracking-tight leading-tight">
-                About <span className="text-[#002B66]">{titleText}</span>
+                {t.about.headingPrefix} <span className="text-[#002B66]">{titleText}</span>
               </h2>
             </div>
 

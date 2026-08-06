@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { 
   Building2, Phone, Mail, MapPin, ArrowUp, Facebook, Linkedin, Twitter
 } from 'lucide-react';
-import { TranslationStructure, SiteConfig } from '../../types';
+import { Language, TranslationStructure, SiteConfig } from '../../types';
 
 interface FooterProps {
   t: TranslationStructure;
+  lang: Language;
   siteConfig: SiteConfig;
   onOpenLegal: (type: 'impressum' | 'privacy') => void;
   onOpenAdmin?: () => void;
@@ -14,6 +15,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({
   t,
+  lang,
   siteConfig,
   onOpenLegal,
   onOpenAdmin,
@@ -34,7 +36,9 @@ export const Footer: React.FC<FooterProps> = ({
   const phoneDisplay = siteConfig.topBar?.phone || t.topBar.phone;
   const primaryEmail = siteConfig.topBar?.email || t.topBar.email;
   const secondaryEmail = siteConfig.topBar?.emailSecondary || 'fidar.bs@gmail.com';
-  const addressDisplay = siteConfig.topBar?.addressDe || t.topBar.address;
+  const addressDisplay = lang === 'de'
+    ? (siteConfig.topBar?.addressDe || t.topBar.address)
+    : (siteConfig.topBar?.addressEn || t.topBar.address);
 
   const [clickCount, setClickCount] = useState(0);
 
@@ -57,7 +61,7 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="shrink-0 rounded-xl border border-white/70 bg-white/90 p-2 shadow-lg shadow-black/20 backdrop-blur-sm">
                 <img
                   src="/logo.png"
-                  alt="Fidar BestSupplier GmbH Logo"
+                  alt="Fidar BestSupplier GmbH"
                   className="h-12 w-auto object-contain"
                 />
               </div>
@@ -66,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({
                   Fidar BestSupplier <span className="text-[#FDB813]">GmbH</span>
                 </h3>
                 <p className="text-[11px] text-[#ABC2E8] font-bold tracking-wider">
-                  Import & Export
+                  {t.topBar.subtitle}
                 </p>
               </div>
             </div>
@@ -135,7 +139,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Column 3: Contact & Headquarters */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-sm font-black text-[#FDB813] uppercase tracking-wider">
-              About Our Company
+              {t.footer.companyTitle}
             </h4>
             <div className="space-y-2 text-xs text-slate-200 font-medium">
               <p className="flex items-start gap-2">
@@ -174,7 +178,7 @@ export const Footer: React.FC<FooterProps> = ({
             <button
               onClick={scrollToTop}
               className="p-2 rounded-lg bg-white/10 hover:bg-[#FDB813] text-white hover:text-[#002B66] transition-all ml-2"
-              aria-label="Back to Top"
+              aria-label={t.footer.backToTop}
             >
               <ArrowUp className="w-4 h-4" />
             </button>

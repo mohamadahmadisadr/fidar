@@ -95,14 +95,12 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1A1A] tracking-tight">
-            {lang === 'de' ? 'Produkte' : 'products'}
+            {t.services.ui.title}
           </h2>
           <p className="text-slate-600 text-base sm:text-lg italic font-medium">
             {activeCategory
-              ? (lang === 'de' ? 'Was wir in der realen Welt tun …' : 'What we do in real world …')
-              : (lang === 'de'
-                  ? 'Wählen Sie eine Kategorie, um die passenden Produkte zu sehen.'
-                  : 'Choose a category to see the matching products.')}
+              ? t.services.ui.activeSubtitle
+              : t.services.ui.chooseCategorySubtitle}
           </p>
         </div>
 
@@ -111,7 +109,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           <div className="py-20 text-center flex flex-col items-center justify-center space-y-3">
             <Loader2 className="w-8 h-8 text-[#002B66] animate-spin" />
             <p className="text-slate-600 text-sm font-medium">
-              {lang === 'de' ? 'Produkte werden geladen …' : 'Loading products...'}
+              {t.services.ui.loading}
             </p>
           </div>
         ) : !activeCategory ? (
@@ -122,7 +120,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <Layers className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-[#1A1A1A]">
-                {lang === 'de' ? 'Keine Kategorien gefunden' : 'No categories found'}
+                {t.services.ui.noCategories}
               </h3>
             </div>
           ) : (
@@ -144,8 +142,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                     <p className="text-xs font-semibold text-slate-600">
                       {cat.count}{' '}
                       {cat.count === 1
-                        ? (lang === 'de' ? 'Produkt' : 'product')
-                        : (lang === 'de' ? 'Produkte' : 'products')}
+                        ? t.services.ui.productSingular
+                        : t.services.ui.productPlural}
                     </p>
                   </div>
 
@@ -165,12 +163,12 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => goToCategory(null)}
-                    aria-label={lang === 'de' ? 'Zurück zu allen Kategorien' : 'Back to all categories'}
+                    aria-label={t.services.ui.backToCategoriesAria}
                     className="inline-flex items-center gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB] text-slate-700 text-xs sm:text-sm font-extrabold hover:border-[#002B66] hover:text-[#002B66] transition-all cursor-pointer shrink-0"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     <span className="hidden sm:inline">
-                      {lang === 'de' ? 'Kategorien' : 'Categories'}
+                      {t.services.ui.categories}
                     </span>
                   </button>
 
@@ -181,8 +179,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                     <p className="text-[11px] font-semibold text-slate-500">
                       {filteredItems.length}{' '}
                       {filteredItems.length === 1
-                        ? (lang === 'de' ? 'Produkt' : 'product')
-                        : (lang === 'de' ? 'Produkte' : 'products')}
+                        ? t.services.ui.productSingular
+                        : t.services.ui.productPlural}
                     </p>
                   </div>
                 </div>
@@ -203,7 +201,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                     >
                       <Layers className="w-4 h-4" />
                       <span className="hidden sm:inline">
-                        {lang === 'de' ? 'Kategorie wechseln' : 'Switch category'}
+                        {t.services.ui.switchCategory}
                       </span>
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-200 ${isCategoryMenuOpen ? 'rotate-180' : ''}`}
@@ -255,14 +253,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   <Package className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-[#1A1A1A]">
-                  {lang === 'de' ? 'Keine Produkte in dieser Kategorie' : 'No items in this category'}
+                  {t.services.ui.noProducts}
                 </h3>
                 <div className="flex items-center justify-center pt-2">
                   <button
                     onClick={() => goToCategory(null)}
                     className="px-4 py-2 bg-[#002B66] text-white rounded-xl text-xs font-bold cursor-pointer"
                   >
-                    {lang === 'de' ? 'Alle Kategorien' : 'All categories'}
+                    {t.services.ui.allCategories}
                   </button>
                 </div>
               </div>
@@ -299,7 +297,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       </div>
                       {item.category && (
                         <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded bg-white text-[#002B66] border border-[#E5E7EB] truncate max-w-[180px]">
-                          {item.category}
+                          {t.services.categories[item.category]}
                         </span>
                       )}
                     </div>
@@ -333,7 +331,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       onClick={() => setSelectedService(item)}
                       className="text-xs font-bold text-[#002B66] hover:text-[#001D47] flex items-center gap-1 transition-colors cursor-pointer"
                     >
-                      <span>{lang === 'de' ? 'Details' : 'Details'}</span>
+                      <span>{t.services.ui.details}</span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
 
@@ -341,7 +339,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       onClick={() => onOpenQuoteWithService(title)}
                       className="px-3.5 py-2 rounded-xl bg-[#002B66] text-white text-xs font-bold shadow-sm hover:bg-[#001D47] transition-all cursor-pointer flex items-center gap-1.5"
                     >
-                      <span>{lang === 'de' ? 'Anfragen' : 'Inquire'}</span>
+                      <span>{t.services.ui.inquire}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -355,14 +353,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             {filteredItems.length > 0 && (
               <div className="mt-12 pt-8 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
                 <p className="text-sm font-semibold text-slate-600">
-                  {lang === 'de' ? 'Nicht das Richtige dabei?' : "Didn't find what you need?"}
+                  {t.services.ui.notFoundPrompt}
                 </p>
                 <button
                   onClick={() => goToCategory(null)}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#002B66] text-white text-xs sm:text-sm font-bold shadow-md hover:bg-[#001D47] transition-all cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  <span>{lang === 'de' ? 'Andere Kategorien ansehen' : 'Browse other categories'}</span>
+                  <span>{t.services.ui.browseOther}</span>
                 </button>
               </div>
             )}
@@ -416,7 +414,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             {getItemFeatures(selectedService).length > 0 && (
               <div className="space-y-3 bg-[#F8FAFC] p-4 rounded-xl border border-[#E5E7EB]">
                 <h4 className="text-xs font-bold text-[#002B66] uppercase tracking-wider">
-                  {lang === 'de' ? 'Spezifikationen' : 'Specifications'}
+                  {t.services.ui.specifications}
                 </h4>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                   {getItemFeatures(selectedService).map((f: string, i: number) => (
@@ -434,7 +432,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 onClick={() => setSelectedService(null)}
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900"
               >
-                {lang === 'de' ? 'Schließen' : 'Close'}
+                {t.services.ui.close}
               </button>
               <button
                 onClick={() => {
@@ -444,7 +442,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 }}
                 className="px-6 py-2.5 rounded-xl text-sm font-bold bg-[#002B66] text-white shadow-md hover:bg-[#001D47] flex items-center gap-2"
               >
-                <span>{lang === 'de' ? 'Anfragen' : 'Inquire'}</span>
+                <span>{t.services.ui.inquire}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

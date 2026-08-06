@@ -184,6 +184,7 @@ export default function App() {
       {/* Footer */}
       <Footer
         t={t}
+        lang={lang}
         siteConfig={siteConfig}
         onOpenLegal={(type) => setLegalType(type)}
         onOpenAdmin={() => navigateTo('/admin')}
@@ -203,6 +204,7 @@ export default function App() {
         type={legalType}
         onClose={() => setLegalType(null)}
         t={t}
+        lang={lang}
         siteConfig={siteConfig}
       />
     </div>

@@ -23,15 +23,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
     email: '',
     phone: '',
     company: '',
-    service: initialService || 'Ferrous & Non-ferrous alloys',
+    service: initialService || t.services.categories.trade,
     message: '',
   });
 
   useEffect(() => {
-    if (initialService) {
-      setFormData((prev) => ({ ...prev, service: initialService }));
-    }
-  }, [initialService]);
+    setFormData((prev) => ({
+      ...prev,
+      service: initialService || t.services.categories.trade,
+    }));
+  }, [initialService, t.services.categories.trade]);
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -65,6 +66,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
         <button
           onClick={onClose}
           disabled={submitting}
+          aria-label={t.quoteModal.close}
           className="absolute top-5 right-5 p-2 rounded-xl bg-slate-100 text-slate-500 hover:text-slate-900 hover:bg-slate-200 disabled:opacity-50"
         >
           <X className="w-5 h-5" />
@@ -89,9 +91,9 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
               <CheckCircle2 className="w-10 h-10" />
             </div>
-            <h4 className="text-2xl font-black text-[#1A1A1A]">Message Sent</h4>
+            <h4 className="text-2xl font-black text-[#1A1A1A]">{t.quoteModal.successTitle}</h4>
             <p className="text-slate-600 text-sm max-w-md mx-auto">
-              Thank you for contacting Fidar BestSupplier GmbH. We will get back to you as soon as possible.
+              {t.quoteModal.successMessage}
             </p>
             <button
               onClick={() => {
@@ -100,19 +102,19 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               }}
               className="px-6 py-2.5 rounded-xl bg-[#002B66] text-white font-bold text-xs"
             >
-              Close Window
+              {t.quoteModal.close}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#1A1A1A]">Name *</label>
+                <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.name} *</label>
                 <input
                   type="text"
                   required
                   disabled={submitting}
-                  placeholder="Your Name"
+                  placeholder={t.quoteModal.namePlaceholder}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full p-3 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none disabled:opacity-60"
@@ -120,12 +122,12 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#1A1A1A]">Email Address *</label>
+                <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.email} *</label>
                 <input
                   type="email"
                   required
                   disabled={submitting}
-                  placeholder="name@company.com"
+                  placeholder={t.quoteModal.emailPlaceholder}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full p-3 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none disabled:opacity-60"
@@ -135,7 +137,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#1A1A1A]">Phone Number</label>
+                <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.phone}</label>
                 <input
                   type="tel"
                   disabled={submitting}
@@ -147,11 +149,11 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#1A1A1A]">Company / Organization</label>
+                <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.company}</label>
                 <input
                   type="text"
                   disabled={submitting}
-                  placeholder="Company Name"
+                  placeholder={t.quoteModal.companyPlaceholder}
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   className="w-full p-3 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none disabled:opacity-60"
@@ -160,7 +162,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#1A1A1A]">Product / Service</label>
+              <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.service}</label>
               <input
                 type="text"
                 disabled={submitting}
@@ -171,11 +173,11 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#1A1A1A]">Message / Product Inquiry</label>
+              <label className="text-xs font-bold text-[#1A1A1A]">{t.quoteModal.message}</label>
               <textarea
                 rows={3}
                 disabled={submitting}
-                placeholder="Details about raw materials, parts or equipment needed..."
+                placeholder={t.quoteModal.messagePlaceholder}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="w-full p-3 rounded-xl bg-white border border-[#E5E7EB] text-slate-900 text-xs focus:border-[#002B66] focus:outline-none resize-none disabled:opacity-60"
@@ -185,7 +187,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             <div className="pt-2 flex items-center justify-between text-xs text-slate-600">
               <span className="flex items-center gap-1 font-semibold">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                Direct Inquiry to Fidar BestSupplier GmbH
+                {t.quoteModal.directInquiry}
               </span>
               <button
                 type="submit"
@@ -197,7 +199,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 ) : (
                   <Send className="w-3.5 h-3.5" />
                 )}
-                <span>{submitting ? 'Sending...' : 'Submit Message'}</span>
+                <span>{submitting ? t.quoteModal.submitting : t.quoteModal.submit}</span>
               </button>
             </div>
           </form>
